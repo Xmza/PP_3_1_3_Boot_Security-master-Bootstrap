@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <title>Admin panel</title>
+    <style>
+        #left-right .nav-link.active {
+            background-color: #007bff;
+            color: white;
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .table-secondary-light {
+            background-color: #f7f7f7;
+        }
+
+        .content-wrapper-light {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-text text-white">
+            <b><span th:text="${currentUser.email}"></span></b> with roles:
+            <span th:text="${currentUser.getRolesInString()}"></span>
+        </div>
+        <div>
+            <a href="/logout" style="color: darkgrey">Logout</a></div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <div id="left-right" class="col-md-3 col-lg-2 bg-light sidebar py-3 px-0 bg-white">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link active" href="/admin">Admin</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user">User</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-9 col-lg-10 content-wrapper-light">
+            <div class="container ml-0">
+            <h1>Admin panel</h1>
+            <div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a class="nav-link" href="/admin">Users table</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/addUser">New User</a></li>
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="panel">
+                    <ul class="list-group">
+                        <li class="list-group-item" style="background-color: #f7f7f7; border-radius: 0">
+                            <h5>Add new user</h5></li>
+                    </ul>
+
+                    <tr>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <div class="bg-white p-4 shadow-sm" style="width: 100%;">
+                                <form th:action="@{/saveUser}" th:object="${user}" method="post" style="width: 26%;" class="mx-auto">
+                                    <input type="hidden" th:field="*{id}"/>
+
+                                    <div class="form-group text-center">
+                                        <label for="name" class="d-block">First name:</label>
+                                        <input type="text" id="name" th:field="*{name}" class="form-control form-control-sm mx-auto" placeholder="First name" required />
+                                    </div>
+
+                                    <div class="form-group text-center">
+                                        <label for="surname" class="d-block">Last name:</label>
+                                        <input type="text" id="surname" th:field="*{surname}" class="form-control form-control-sm mx-auto" placeholder="Last name" required />
+                                    </div>
+
+                                    <div class="form-group text-center">
+                                        <label for="age" class="d-block">Age:</label>
+                                        <input type="number" id="age" th:field="*{age}" class="form-control form-control-sm mx-auto" placeholder="Age" required min="0" step="1" />
+                                    </div>
+
+                                    <div class="form-group text-center">
+                                        <label for="email" class="d-block">Email:</label>
+                                        <input type="text" id="email" th:field="*{email}" class="form-control form-control-sm mx-auto" placeholder="Email" required />
+                                    </div>
+
+                                    <div class="form-group text-center">
+                                        <label for="password" class="d-block">Password:</label>
+                                        <input type="password" id="password" th:field="*{password}" class="form-control form-control-sm mx-auto" placeholder="Password" required />
+                                    </div>
+
+                                    <div class="form-group text-center">
+                                        <label>Role:</label>
+                                        <select th:field="*{roles}" multiple="multiple" class="form-control form-control-sm mx-auto" style="max-height: 44px; overflow-y: auto;" required>
+                                            <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role}"></option>
+                                        </select>
+                                    </div>
+                                    <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">
+                                </form>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
